@@ -1,0 +1,23 @@
+{
+	"manifest_version": 2,
+	"name": "SIGO-ESPINETE",
+	"author": "F.G.R.",
+	"description": "Referesca los tickets evitando que se  cierre la sesión",
+	"icons": {
+		"16": "icon16.png",
+		"32": "icon32.png", 
+		"48": "icon48.png"
+	},
+	"version": "0.1",
+	"permissions": [ "tabs" ],
+	"content_scripts": [
+		{ "matches": ["https://siguetecnico.jccm.es/*"],
+		  "all_frames": true,
+		  "css": ["estilos.css"],
+		  "js": ["tab_functions.js"]
+		}
+	],
+	"web_accessible_resources": [
+		"*.png"
+	]
+}
