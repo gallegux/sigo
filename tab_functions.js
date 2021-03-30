@@ -63,8 +63,10 @@ function refrescar() {
 
 function cambiarIcono() {
 	a = getElementByNAV('link', 'rel', 'shortcut icon')
+	console.log('iconillo')
+	console.log(a)
 	if (a != -1) {
-		a.href = 'sigo.png'
+		a.href = 'https://raw.githubusercontent.com/gallegux/croack/main/espinete-icon.png'
 		console.log("icono cambiado")
 	}
 }

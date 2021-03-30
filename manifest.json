@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "SIGO-ESPINETE",
 	"author": "F.G.R.",
-	"description": "Referesca los tickets evitando que se  cierre la sesión",
+	"description": "Referesca los tickets evitando que se cierre la sesión de SIGUE",
 	"icons": {
 		"16": "icon16.png",
 		"32": "icon32.png", 
