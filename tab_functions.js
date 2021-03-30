@@ -66,7 +66,7 @@ function cambiarIcono() {
 	console.log('iconillo')
 	console.log(a)
 	if (a != -1) {
-		a.href = 'https://raw.githubusercontent.com/gallegux/sigo/main/espinete-icon.png'
+		a.href = 'https://raw.githubusercontent.com/gallegux/sigo/main/icon16.png'
 		console.log("icono cambiado")
 	}
 }
@@ -94,7 +94,7 @@ function anadirCRU() {
 	]
 
 	tabla = document.createElement('table')
-	tabla.style = 'position: absolute; bottom: 0px; width: 200%; height: 35px !important; background-color: #002855;'
+	tabla.style = 'position: absolute; bottom: 0px; width: 100%; height: 35px !important; background-color: #002855;'
 	
 	fila = document.createElement('tr')
 	tabla.appendChild(fila)
@@ -134,7 +134,5 @@ setInterval(refrescar, 55000, "JavaScript")
 cambiarIcono()
 
 anadirCRU()
-
-//anadirEsquina()
 
 //anadirEsquina()
