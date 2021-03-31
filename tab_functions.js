@@ -1,6 +1,4 @@
 
-var enlace_quitado = false
-var icono_quitado = false
 var recien_cargado = true
 
 
@@ -31,20 +29,15 @@ function getElementByNI(nombreElemento, innerHTMLtext) {
 
 function quitarEnlace() {
 
-	if (!enlace_quitado) {
-		a = getElementByNI('a', 'Ir directamente a contenido principal')
+	a = getElementByNI('a', 'Ir directamente a contenido principal')
 		
-		if (a != -1) {
-			a.innerHTML = ""
-			enlace_quitado = true
-			console.log("quitado")
-		}
+	if (a != -1) {
+		a.innerHTML = ""
+		enlace_quitado = true
+		console.log("quitado")
 	}
 
-	if (!enlace_quitado) {
-		console.log('no quitado')
-		setTimeout(quitarEnlace,1000, "JavaScript")
-	}
+	setTimeout(quitarEnlace,1000, "JavaScript")
 }
 
 
@@ -77,6 +70,7 @@ function crearLink(nombre, url) {
 	a.innerHTML = nombre
 	a.href = url
 	a.target = '_blank'
+	a.style.fontSize = '19px'
 	
 	return a
 }
@@ -84,17 +78,18 @@ function crearLink(nombre, url) {
 
 function anadirCRU() {
 	opts = [ 
+		{nombre: '<b>CRU:</b>', url: 'http://cru.es'},
 		{nombre: 'Alta&nbsp;usuarios', url: 'https://cru.jccm.es/usuarios/index.php'} , 
 		{nombre: 'Buscar&nbsp;usuarios', url: 'https://cru.jccm.es/usuarios/buscar.php?estado=0'} , 
 		{nombre: 'Personal&nbsp;docente', url: 'http://educacion.jccm.es/gesid/gesid/buscarUsuario/buscarUsuario.jsf'} , 
 		{nombre: 'Registro&nbsp;de&nbsp;cambios', url: 'https://cru.jccm.es/usuarios/logs.php'} , 
 		{nombre: 'Telefonía&nbsp;IP', url: 'https://cru.jccm.es/AXL105/'} , 
 		{nombre: 'Listas&nbsp;de&nbsp;distribución', url: 'https://cru.jccm.es/usuarios/listas.php'},
-		{nombre: 'OCS', url: 'http://ocs.jclm.es/ocsreports/'}
+		{nombre: '<b>OCS</b>', url: 'http://ocs.jclm.es/ocsreports/'}
 	]
 
 	tabla = document.createElement('table')
-	tabla.style = 'position: absolute; bottom: 0px; width: 100%; height: 35px !important; background-color: #002855;'
+	tabla.style = 'position: absolute; bottom: 0px; width: 100%; height: 37px !important; background-color: #002855;'
 	
 	fila = document.createElement('tr')
 	tabla.appendChild(fila)
@@ -117,22 +112,74 @@ function anadirCRU() {
 	document.body.appendChild(tabla)
 }
 
-/*
+
 function anadirEsquina() {
 	x = document.createElement('img')
-	x.src = 'chrome-extension:///espinete_tumbado.png'
-	x.style = 'position: absolute; bottom: 0; left: 0; z-index: -10;'
+	x.src = 'https://raw.githubusercontent.com/gallegux/sigo/main/espinete_tumbado.png'
+	x.style = 'position: absolute; bottom: 0; left: 0; z-index: 10;'
 	
 	document.body.appendChild(x)
 }
-*/
 
-setTimeout(quitarEnlace,1000, "JavaScript")
 
-setInterval(refrescar, 55000, "JavaScript")
+function cambiarPrioridades() {
+	cambios = false
+	celdas = document.getElementsByTagName('TD')
+	
+	for (i = 0; i < celdas.length; i++) {
+		celda = celdas[i]
+		texto = celda.innerHTML
+		prioridad = ''
+		
+		if (texto == 'Media') {
+			prioridad = 'medium'
+		}
+		else if (texto == 'Baja') {
+			prioridad = 'low'
+		}
+		else if (texto == 'Alta') {
+			prioridad = 'high'
+		}
+		if (prioridad != '') {
+			celda.innerHTML = '<span class="tc__cell-priority_' + prioridad + '" title="Media"></span>'
+			celda.setAttribute('align', 'center')
+			cambios = true
+		}
+	}
+	
+	if (!cambios) {
+		setTimeout(cambiarPrioridades,1000, "JavaScript")
+	}
+}
+
+
+function quitarMas() {
+	enlaces = document.getElementsByTagName('A')
+	console.log('enlaces ' + enlaces.length)
+	for (i = 0; i < enlaces.length; i++) {
+		enlace = enlaces[i]
+		//console.log(enlace.innerHTML)
+		if (enlace.innerHTML == 'Más <i class="navigation-bar__item-icon icon-angle_down"></i>') {
+			opcionMenu = enlace.parentNode.parentNode
+			opcionMenu.innerHTML = ''
+			return
+		}
+	}
+	setTimeout(quitarMas,1000, "JavaScript")
+}
+
 
 cambiarIcono()
 
 anadirCRU()
 
-//anadirEsquina()
+anadirEsquina()
+
+setTimeout(quitarMas,1000, "JavaScript")
+
+setTimeout(quitarEnlace,1000, "JavaScript")
+
+setTimeout(cambiarPrioridades, 1000, "JavaScript")
+
+setInterval(refrescar, 55000, "JavaScript")
+

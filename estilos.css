@@ -1,4 +1,4 @@
-body {
+mbody {
 	background-image: url(chrome-extension://__MSG_@@extension_id__/espinete_tumbado.png);
 	background-position: left bottom;
 	background-repeat: no-repeat;
@@ -9,4 +9,9 @@ body {
 	background-image: url(chrome-extension://__MSG_@@extension_id__/sigo.png)  !important;  
 	width: 184px; height:54px;
 	background-repeat: no-repeat;
+}
+
+table {
+	filter: alpha(opacity=35); 
+	background-color: #a4a4a4;
 }
