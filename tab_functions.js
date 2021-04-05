@@ -27,6 +27,19 @@ function getElementByNI(nombreElemento, innerHTMLtext) {
 }
 
 
+function buscarElemento(tagName, contenido) {
+	eles = document.getElementsByTagName(tagName)
+	
+	for (i = 0; i < eles.length; i++) {
+		if (eles[i].innerHTML.indexOf(contenido) != -1) {
+			console.log('encontrado ' + contenido)
+			return eles[i]
+		}
+	}
+	return -1
+}
+
+
 function quitarEnlace() {
 
 	a = getElementByNI('a', 'Ir directamente a contenido principal')
@@ -89,7 +102,8 @@ function anadirCRU() {
 	]
 
 	tabla = document.createElement('table')
-	tabla.style = 'position: absolute; bottom: 0px; width: 100%; height: 37px !important; background-color: #002855;'
+	//tabla.style = 'position: absolute; bottom: 0px; width: 100%; height: 37px !important; background-color: #002855; z-index: 2;'
+	tabla.setAttribute('id', 'barraCRU')
 	
 	fila = document.createElement('tr')
 	tabla.appendChild(fila)
@@ -114,11 +128,38 @@ function anadirCRU() {
 
 
 function anadirEsquina() {
-	x = document.createElement('img')
-	x.src = 'https://raw.githubusercontent.com/gallegux/sigo/main/espinete_tumbado.png'
-	x.style = 'position: absolute; bottom: 0; left: 0; z-index: 10;'
+	//x = document.createElement('img')
+	//x.className = 'espineteTumbado'
+	//x.src = 'https://raw.githubusercontent.com/gallegux/sigo/main/espinete_tumbado.png'
+	//x.style = 'position: fixed; bottom: 37; left: 0; z-index: 10;animation-name: mvespi;animation-delay: 1;animation-duration: 2;animation-iteration-count: 1;'
+	
+	x = document.createElement('div')
+	x.setAttribute('id', 'espineteTumbado')
+	//x.className = 'espineteTumbado'
 	
 	document.body.appendChild(x)
+}
+
+
+function revisarEsquina() {
+	dl = ''+document.location
+	espi = document.getElementById('espineteTumbado')
+	divnose = buscarElemento('div', 'No se encontraron resultados')
+	
+	if (dl.indexOf('workorder') != -1) {
+		espi.className = 'espineteTumbadoNoVisible'
+	}
+	else {
+		espi.className = 'espineteTumbadoVisible'
+		console.log(espi.className)
+
+		if (divnose != -1) {
+			espi.style.zIndex = 1
+		}
+		else {
+			espi.style.zIndex = -1
+		}
+	}
 }
 
 
@@ -147,9 +188,9 @@ function cambiarPrioridades() {
 		}
 	}
 	
-	if (!cambios) {
+	/*if (!cambios) {
 		setTimeout(cambiarPrioridades,1000, "JavaScript")
-	}
+	}*/
 }
 
 
@@ -169,17 +210,92 @@ function quitarMas() {
 }
 
 
+
+function quitarOpcionDeMenuMas(texto) {
+	ele = buscarElemento('li', texto)
+	console.log('quitarOpcionDeMenuMas ' + ele)
+	if (ele != -1) {
+		li = ele.parentNode
+		console.log('quitarOpcionDeMenuMas ' + li)
+		li.removeChild(ele)
+		console.log('quitarOpcionDeMenuMas quitado '+texto)
+		return true
+	}
+	return false
+}
+
+function crearOpcion(texto, url, indent=true) {
+	if (indent) {
+		indent = '&nbsp;&nbsp;&nbsp;&nbsp;'
+	}
+	else {
+		indent = ''
+	}
+	opc = document.createElement('li')
+	opc.className = 'navigation-bar__item-menu-list ng-scope'
+	opc.innerHTML = '<a ng-if="item.extended" class="dropdown-item template-chooser-dropdown-item navigation-wrap__dropdown-item ng-binding ng-scope" href="'+url+'" target="_new">'+indent+texto+' <i class="icon-pop_up ng-scope" ng-if="item.target === \'new\'"></i></a></li>'
+	
+	return opc
+}
+
+
+menu_modificado = false
+function modificarMenu()
+{
+	console.log("MODIFICAR MENU")
+	// quitar reserva de salas
+	q1 = quitarOpcionDeMenuMas('Reserva de salas')
+	q2 = quitarOpcionDeMenuMas('Gestión de Telefonía IP')
+	menu_modificado = q1 || q2
+	
+	if (menu_modificado) {
+		menu = buscarElemento('a', 'Más')
+		console.log('mas ' + menu)
+		menu = menu.parentNode
+		console.log('mas ' + menu)
+		ul = menu.childNodes[1]
+		//opcTelefonia = ul.childNodes[1]
+		//ul.removeChild(opcTelefonia)
+		
+		// anadimos opciones
+		opc1 = crearOpcion('Alta usuarios', 'https://cru.jccm.es/usuarios/index.php')
+		opc2 = crearOpcion('Buscar usuarios', 'https://cru.jccm.es/usuarios/buscar.php?estado=0')
+		opc4 = crearOpcion('Registro de cambios', 'https://cru.jccm.es/usuarios/logs.php')
+		opc5 = crearOpcion('Telefonía IP', 'https://cru.jccm.es/AXL105/')
+		opc6 = crearOpcion('Listas de distribución', 'https://cru.jccm.es/usuarios/listas.php')
+		opc7 = crearOpcion('OCS', 'http://ocs.jclm.es/ocsreports/', false)
+		opc3 = crearOpcion('Personal docente', 'http://educacion.jccm.es/gesid/gesid/buscarUsuario/buscarUsuario.jsf', false)
+		
+		ul.appendChild(opc1)
+		ul.appendChild(opc2)
+		ul.appendChild(opc4)
+		ul.appendChild(opc5)
+		ul.appendChild(opc6)
+		ul.appendChild(opc7)
+		ul.appendChild(opc3)
+	}
+
+	if (!menu_modificado) {
+		setTimeout(modificarMenu, 1000, "JavaScript")
+	}
+}
+
+
+
+
 cambiarIcono()
 
-anadirCRU()
-
-anadirEsquina()
-
-setTimeout(quitarMas,1000, "JavaScript")
+//anadirCRU()
+//setTimeout(quitarMas,1000, "JavaScript")
 
 setTimeout(quitarEnlace,1000, "JavaScript")
 
-setTimeout(cambiarPrioridades, 1000, "JavaScript")
+setInterval(cambiarPrioridades, 1000, "JavaScript")
 
 setInterval(refrescar, 55000, "JavaScript")
 
+anadirEsquina()
+
+setInterval(revisarEsquina, 1000, "JavaScript")
+
+modificarMenu()
