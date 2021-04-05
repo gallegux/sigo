@@ -146,19 +146,22 @@ function revisarEsquina() {
 	espi = document.getElementById('espineteTumbado')
 	divnose = buscarElemento('div', 'No se encontraron resultados')
 	
-	if (dl.indexOf('workorder') != -1) {
-		espi.className = 'espineteTumbadoNoVisible'
-	}
-	else {
+	if (dl.indexOf('ticket-console') != -1) {
+		espi.className = ''
 		espi.className = 'espineteTumbadoVisible'
-		console.log(espi.className)
 
 		if (divnose != -1) {
+			console.log('pagina con resultados')
 			espi.style.zIndex = 1
 		}
 		else {
+			console.log('sin resultados')
 			espi.style.zIndex = -1
 		}
+	}
+	else {
+		console.log('pagina detalle')
+		espi.className = 'espineteTumbadoNoVisible'
 	}
 }
 
