@@ -88,7 +88,7 @@ function crearLink(nombre, url) {
 	return a
 }
 
-
+/**
 function anadirCRU() {
 	opts = [ 
 		{nombre: '<b>CRU:</b>', url: 'http://cru.es'},
@@ -125,7 +125,7 @@ function anadirCRU() {
 	
 	document.body.appendChild(tabla)
 }
-
+**/
 
 function anadirEsquina() {
 	//x = document.createElement('img')
@@ -185,18 +185,15 @@ function cambiarPrioridades() {
 			prioridad = 'high'
 		}
 		if (prioridad != '') {
-			celda.innerHTML = '<span class="tc__cell-priority_' + prioridad + '" title="Media"></span>'
+			celda.innerHTML = '<span class="tc__cell-priority_' + prioridad + '" title="' + prioridad + '"></span>'
 			celda.setAttribute('align', 'center')
 			cambios = true
 		}
 	}
-	
-	/*if (!cambios) {
-		setTimeout(cambiarPrioridades,1000, "JavaScript")
-	}*/
 }
 
 
+/**
 function quitarMas() {
 	enlaces = document.getElementsByTagName('A')
 	console.log('enlaces ' + enlaces.length)
@@ -211,7 +208,7 @@ function quitarMas() {
 	}
 	setTimeout(quitarMas,1000, "JavaScript")
 }
-
+**/
 
 
 function quitarOpcionDeMenuMas(texto) {
@@ -284,12 +281,39 @@ function modificarMenu()
 }
 
 
+function eliminarPanelPadre(valorAtributoDataPanelId) {
+	panel  = getElementByNAV('div', 'data-panel-id', valorAtributoDataPanelId)
+	if (panel != -1) {
+		panelPadre = panel.parentNode
+		panelAbuelo = panelPadre.parentNode
+		panelAbuelo.removeChild(panelPadre)
+	}
+}
 
 
-cambiarIcono()
+/**
+QUITA PANELES VACIOS
+MUESTRA AUTOMATICAMENTE TODO EL TEXTO DE LA INCIDENCIA/CONSULTA
+**/
+function modificarPantallaIncidencia() {
+	boton = getElementByNI('button', 'Mostrar más')
+	if (boton != -1)	boton.click()
+	
+	panelDetails = getElementByNAV('div', 'data-panel-id', 'detailsPanel')
+	if (panelDetails != -1)	panelDetails.style.width = "100%"
+	
+	// quitar paneles vacios que hacen huecos a lo alto
+	panelVacio = getElementByNAV('div', 'data-panel-id', 'categorization')
+	if (panelVacio != -1)	panelVacio.parentNode.removeChild(panelVacio)
 
-//anadirCRU()
-//setTimeout(quitarMas,1000, "JavaScript")
+	eliminarPanelPadre('affectedServiceDetails')
+	eliminarPanelPadre('contactNameDetails')
+	eliminarPanelPadre('workOrderLocationPanel')
+	eliminarPanelPadre('scheduledDatesSection')
+	eliminarPanelPadre('additionalData1')
+}
+
+
 
 setTimeout(quitarEnlace,1000, "JavaScript")
 
@@ -297,8 +321,13 @@ setInterval(cambiarPrioridades, 1000, "JavaScript")
 
 setInterval(refrescar, 55000, "JavaScript")
 
-anadirEsquina()
-
 setInterval(revisarEsquina, 1000, "JavaScript")
 
+setInterval(modificarPantallaIncidencia, 1000, "JavaScript")
+
+cambiarIcono()
+
 modificarMenu()
+
+anadirEsquina()
+

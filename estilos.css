@@ -11,6 +11,15 @@ td {
 	background: rgb(255,255,255,0.7) !important;
 }
 
+.tc__accessible td, .tc__accessible th {
+	padding: 7px !important;
+	
+}
+
+.label__text, .ticket__label-small {
+    color: #33e !important;
+}
+
 .espineteTumbadoNoVisible {
 	position: fixed;
 	bottom: -260px;
