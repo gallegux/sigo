@@ -142,26 +142,29 @@ function anadirEsquina() {
 
 
 function revisarEsquina() {
-	dl = ''+document.location
 	espi = document.getElementById('espineteTumbado')
-	divnose = buscarElemento('div', 'No se encontraron resultados')
 	
-	if (dl.indexOf('ticket-console') != -1) {
-		espi.className = ''
-		espi.className = 'espineteTumbadoVisible'
+	if (espi != null) {
+		dl = ''+document.location
+		
+		if (dl.indexOf('ticket-console') != -1) {
+			espi.className = ''
+			espi.className = 'espineteTumbadoVisible'
 
-		if (divnose != -1) {
-			console.log('pagina con resultados')
-			espi.style.zIndex = 1
+			divnose = buscarElemento('div', 'No se encontraron resultados')
+			if (divnose != -1) {
+				console.log('pagina con resultados')
+				espi.style.zIndex = 1
+			}
+			else {
+				console.log('sin resultados')
+				espi.style.zIndex = -1
+			}
 		}
 		else {
-			console.log('sin resultados')
-			espi.style.zIndex = -1
+			console.log('pagina detalle')
+			espi.className = 'espineteTumbadoNoVisible'
 		}
-	}
-	else {
-		console.log('pagina detalle')
-		espi.className = 'espineteTumbadoNoVisible'
 	}
 }
 
@@ -296,6 +299,9 @@ QUITA PANELES VACIOS
 MUESTRA AUTOMATICAMENTE TODO EL TEXTO DE LA INCIDENCIA/CONSULTA
 **/
 function modificarPantallaIncidencia() {
+	titulo = getElementByNAV('div', 'class', 'title-bar__summary ng-binding ng-scope')
+	if (titulo != -1)	titulo.parentNode.removeChild(titulo)
+	
 	boton = getElementByNI('button', 'Mostrar más')
 	if (boton != -1)	boton.click()
 	
