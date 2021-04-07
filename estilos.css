@@ -20,6 +20,61 @@ td {
     color: #33e !important;
 }
 
+.layout-renderer__child-column {
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
+    padding-left: 0;
+}
+
+.editable-content-section .ticket-summary__content .content {
+	padding: 2px 0px !important;
+}
+
+.profile-relation__tab-content {
+    padding: 0px !important;
+    min-height: 0px !important;
+}
+
+.label__text {
+	padding-bottom: 5px;
+}
+
+.title-bar__section {
+    padding: 10px 20px 5px !important;
+}
+
+.status-bar__section-edit {
+    flex-shrink: 0;
+    padding: 0 110px 15px 20px !important;
+}
+
+.category-widget__item, .layout-renderer__column {
+    padding-bottom: 1px !important;
+}
+
+.priority__item {
+    padding: 0 15px 10px 0 !important;
+    display: inline-block;
+}
+
+.status-bar__section-edit .col-sm-4.update-status__dropdown {
+    padding-right: 0;
+    padding-left: 15px !important;
+}
+
+
+.dropdown-input__button, .person-select-type {
+    width: 210px !important;
+}
+
+.layout-renderer__parent-row {
+    display: flex;
+    padding: 0 24px !important;
+    margin-right: 0;
+}
+
+
+
 .espineteTumbadoNoVisible {
 	position: fixed;
 	bottom: -260px;

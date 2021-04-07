@@ -69,11 +69,9 @@ function refrescar() {
 
 function cambiarIcono() {
 	a = getElementByNAV('link', 'rel', 'shortcut icon')
-	console.log('iconillo')
-	console.log(a)
+
 	if (a != -1) {
-		a.href = 'https://raw.githubusercontent.com/gallegux/sigo/main/icon16.png'
-		console.log("icono cambiado")
+		a.href = chrome.runtime.getURL("./icon16.png");
 	}
 }
 
@@ -128,14 +126,8 @@ function anadirCRU() {
 **/
 
 function anadirEsquina() {
-	//x = document.createElement('img')
-	//x.className = 'espineteTumbado'
-	//x.src = 'https://raw.githubusercontent.com/gallegux/sigo/main/espinete_tumbado.png'
-	//x.style = 'position: fixed; bottom: 37; left: 0; z-index: 10;animation-name: mvespi;animation-delay: 1;animation-duration: 2;animation-iteration-count: 1;'
-	
 	x = document.createElement('div')
 	x.setAttribute('id', 'espineteTumbado')
-	//x.className = 'espineteTumbado'
 	
 	document.body.appendChild(x)
 }
@@ -317,6 +309,18 @@ function modificarPantallaIncidencia() {
 	eliminarPanelPadre('workOrderLocationPanel')
 	eliminarPanelPadre('scheduledDatesSection')
 	eliminarPanelPadre('additionalData1')
+	
+	// quitar la opción "mostrar menos"
+	bmm = getElementByNI('button', 'Mostrar menos')
+	if (bmm != -1)	bmm.parentNode.removeChild(bmm)
+	
+	// quitar "Para asignar el ticket..."
+	panel = getElementByNAV('div', 'data-field-id', 'jccm_chr_leyenda')
+	if (panel != -1)	panel.parentNode.removeChild(panel)
+		
+	// bajar Ubicacion
+	panel = getElementByNAV('div', 'data-field-id', 'site')
+	if (panel != -1)	panel.style.paddingTop = '15px'
 }
 
 
