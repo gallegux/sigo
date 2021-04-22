@@ -1,7 +1,4 @@
 
-var recien_cargado = true
-
-
 function getElementByNAV(nombreElemento, nombreAtributo, valorAtributo)
 {
 	ee = document.getElementsByTagName(nombreElemento)
@@ -53,6 +50,9 @@ function quitarEnlace() {
 	setTimeout(quitarEnlace,1000, "JavaScript")
 }
 
+
+
+var recien_cargado = true
 
 function refrescar() {
 	if (recien_cargado) {
@@ -127,8 +127,7 @@ function anadirCRU() {
 
 function anadirEsquina() {
 	x = document.createElement('div')
-	x.setAttribute('id', 'espineteTumbado')
-	
+	x.setAttribute('id', 'espineteTumbado')	
 	document.body.appendChild(x)
 }
 
@@ -228,7 +227,7 @@ function crearOpcion(texto, url, indent=true) {
 	}
 	opc = document.createElement('li')
 	opc.className = 'navigation-bar__item-menu-list ng-scope'
-	opc.innerHTML = '<a ng-if="item.extended" class="dropdown-item template-chooser-dropdown-item navigation-wrap__dropdown-item ng-binding ng-scope" href="'+url+'" target="_new">'+indent+texto+' <i class="icon-pop_up ng-scope" ng-if="item.target === \'new\'"></i></a></li>'
+	opc.innerHTML = '<a ng-if="item.extended" class="dropdown-item template-chooser-dropdown-item navigation-wrap__dropdown-item ng-binding ng-scope" href="'+url+'" target="_blank" style="font-size: 16px !important; padding: 6px 12px !important; line-height: 26px !important;">'+indent+texto+'&nbsp;&nbsp;&nbsp;<i class="icon-pop_up ng-scope" ng-if="item.target === \'new\'"></i></a></li>'
 	
 	return opc
 }
@@ -241,6 +240,7 @@ function modificarMenu()
 	// quitar reserva de salas
 	q1 = quitarOpcionDeMenuMas('Reserva de salas')
 	q2 = quitarOpcionDeMenuMas('Gestión de Telefonía IP')
+	q3 = quitarOpcionDeMenuMas('CRU')
 	menu_modificado = q1 || q2
 	
 	if (menu_modificado) {
@@ -253,6 +253,7 @@ function modificarMenu()
 		//ul.removeChild(opcTelefonia)
 		
 		// anadimos opciones
+		opc0 = crearOpcion('CRU', 'https://cru.jccm.es', false)
 		opc1 = crearOpcion('Alta usuarios', 'https://cru.jccm.es/usuarios/index.php')
 		opc2 = crearOpcion('Buscar usuarios', 'https://cru.jccm.es/usuarios/buscar.php?estado=0')
 		opc4 = crearOpcion('Registro de cambios', 'https://cru.jccm.es/usuarios/logs.php')
@@ -260,7 +261,9 @@ function modificarMenu()
 		opc6 = crearOpcion('Listas de distribución', 'https://cru.jccm.es/usuarios/listas.php')
 		opc7 = crearOpcion('OCS', 'http://ocs.jclm.es/ocsreports/', false)
 		opc3 = crearOpcion('Personal docente', 'http://educacion.jccm.es/gesid/gesid/buscarUsuario/buscarUsuario.jsf', false)
+		opc8 = crearOpcion('Directorio de correo', 'https://cru.jccm.es/usuarios/listin.php', false)
 		
+		ul.appendChild(opc0)
 		ul.appendChild(opc1)
 		ul.appendChild(opc2)
 		ul.appendChild(opc4)
@@ -268,6 +271,7 @@ function modificarMenu()
 		ul.appendChild(opc6)
 		ul.appendChild(opc7)
 		ul.appendChild(opc3)
+		ul.appendChild(opc8)
 	}
 
 	if (!menu_modificado) {
@@ -317,6 +321,8 @@ function modificarPantallaIncidencia() {
 	// quitar "Para asignar el ticket..."
 	panel = getElementByNAV('div', 'data-field-id', 'jccm_chr_leyenda')
 	if (panel != -1)	panel.parentNode.removeChild(panel)
+	panel = getElementByNAV('div', 'data-field-id', 'jccm_chr_informacion')
+	if (panel != -1)	panel.parentNode.removeChild(panel)
 		
 	// bajar Ubicacion
 	panel = getElementByNAV('div', 'data-field-id', 'site')
@@ -329,7 +335,7 @@ setTimeout(quitarEnlace,1000, "JavaScript")
 
 setInterval(cambiarPrioridades, 1000, "JavaScript")
 
-setInterval(refrescar, 55000, "JavaScript")
+setInterval(refrescar, 120000, "JavaScript")
 
 setInterval(revisarEsquina, 1000, "JavaScript")
 
