@@ -335,7 +335,7 @@ setTimeout(quitarEnlace,1000, "JavaScript")
 
 setInterval(cambiarPrioridades, 1000, "JavaScript")
 
-setInterval(refrescar, 120000, "JavaScript")
+setInterval(refrescar, 150000, "JavaScript")
 
 setInterval(revisarEsquina, 1000, "JavaScript")
 

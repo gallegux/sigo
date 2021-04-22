@@ -74,6 +74,32 @@ td {
 }
 
 
+.navigation-bar__item_selected .navigation-bar__item-label {
+    opacity: 1;
+    color: #F59CA2 !important;
+}
+
+.navigation-bar__item-label:hover {
+    color: #5ED2D1 !important;
+}
+
+.icon-book_o:hover {
+    color: #5ED2D1 !important;
+}
+.icon-search:hover {
+    color: #5ED2D1 !important;
+}
+
+.dropdown-toggle.navigation-bar__my-profile:hover {
+    font-size: 18px;
+    color: #5ED2D1 !important;
+}
+
+.navigation-bar__item-label {
+    color: #fff;
+	font-weight: bold !important;
+}
+
 .espineteTumbadoNoVisible {
 	position: fixed;
 	bottom: -260px;
