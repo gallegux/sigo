@@ -144,11 +144,11 @@ function revisarEsquina() {
 
 			divnose = buscarElemento('div', 'No se encontraron resultados')
 			if (divnose != -1) {
-				console.log('pagina con resultados')
+				//console.log('pagina con resultados')
 				espi.style.zIndex = 1
 			}
 			else {
-				console.log('sin resultados')
+				//console.log('sin resultados')
 				espi.style.zIndex = -1
 			}
 		}
@@ -327,13 +327,77 @@ function modificarPantallaIncidencia() {
 	// bajar Ubicacion
 	panel = getElementByNAV('div', 'data-field-id', 'site')
 	if (panel != -1)	panel.style.paddingTop = '15px'
+	
+	// quitar Cliente
+	panel = getElementByNAV('span', 'id', 'customerLabel')
+	if (panel != -1)	panel.parentElement.removeChild(panel)
+}
+
+
+function modificarEnlacesLista() {
+	aa = document.getElementsByTagName('a')
+	
+	for (i = 0; i < aa.length; i++) {
+		e = aa[i]
+		texto = e.innerHTML
+		if (texto == 'Ver detalles') {
+			al = e.getAttribute('aria-label')
+			espacio = al.indexOf(' ')
+			identificador = al.substring(0, espacio)
+			e.setAttribute('target', identificador)
+			
+			img = document.createElement('img')
+			img.src = chrome.runtime.getURL("./eye-icon.png")
+			e.innerHTML = ''
+			e.appendChild(img)
+			
+			td = e.parentElement
+			td.setAttribute('align', 'center')
+		}
+	}
+}
+
+
+function modificarFechasLista() {
+	tds = document.getElementsByTagName('td')
+	
+	for (i = 0; i < tds.length; i++) {
+		c = tds[i]
+		ch = c.getAttribute('headers')
+		if (ch != null && ch.startsWith('Fecha de ')) {
+			fecha = c.innerHTML
+			fecha = fecha.substring(0, 16)
+			c.innerHTML = fecha
+		}
+	}
+}
+
+
+
+function modificarEstadoLista() {
+	tds = document.getElementsByTagName('td')
+	
+	for (i = 0; i < tds.length; i++) {
+		c = tds[i]
+		ch = c.getAttribute('headers')
+		if (ch != null && ch.startsWith('Estado')) {
+			est = c.innerHTML
+			//console.log(est)
+			if      (est == 'En curso')  c.style.color = '#008000' // verde
+			else if (est == 'Planificación') c.style.color = '#008040' // verde azulado
+			else if (est == 'Asignado')  c.style.color = '#804080' // violeta
+			else if (est == 'Pendiente') c.style.color = '#FF8000' // naranja
+			else if (est == 'Rechazado') c.style.color = '#C00000' 
+			else if (est == 'Cancelado') c.style.color = '#C00000'
+			else if (est == 'Terminado') c.style.color = '#000000'
+			else if (est == 'Esperando autorización') c.style.color = '#8080C0' // azul grisaceo
+		}
+	}
 }
 
 
 
 setTimeout(quitarEnlace,1000, "JavaScript")
-
-setInterval(cambiarPrioridades, 1000, "JavaScript")
 
 setInterval(refrescar, 150000, "JavaScript")
 
@@ -347,3 +411,10 @@ modificarMenu()
 
 anadirEsquina()
 
+setInterval(cambiarPrioridades, 1000, "JavaScript")
+
+setInterval(modificarEnlacesLista, 1000, "JavaScript")
+
+setInterval(modificarFechasLista, 1000, "JavaScript")
+
+setInterval(modificarEstadoLista, 1000, "JavaScript")

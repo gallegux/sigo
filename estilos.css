@@ -17,7 +17,7 @@ td {
 }
 
 .label__text, .ticket__label-small {
-    color: #4444aa !important;
+    color: #0040C0 !important;
 }
 
 .layout-renderer__child-column {
@@ -101,10 +101,50 @@ td {
 	font-weight: bold !important;
 }
 
+.feed-item {
+    padding: 4px 5px 4px 0 !important;
+}
+
+.feed-item__avatar {
+    width: 32px !important;
+}
+
+.timeline-item__main-content {
+    margin-left: 50px !important;
+}
+
+.feed-item__system-image, .feed-item__user-image {
+    width: 50px !important;
+}
+
 .espineteTumbadoNoVisible {
 	position: fixed;
 	bottom: -260px;
 }
+
+.tc__row-count {
+    padding: 0px 0px 0px 0px !important;
+}
+
+.person-name__avatar_big .app__person-avatar_small, .person-name .person-name__avatar_big .chat-message__user-thumbnail {
+    width: 50px !important;
+    height: 50px !important;
+}
+
+/* nombre del cliente */
+.person-summary__full-name_link {
+    color: #FF4040 !important;
+}
+
+.timeline-note {
+    margin: 10px 0 2px !important;
+}
+
+/* color de fondo de las lineas */
+.tc__accessible tr.tc__cell-selected {
+    background-color: #aaccee !important;
+}
+
 
 .espineteTumbadoVisible {
 	width: 268px;
