@@ -12,6 +12,7 @@ function getElementByNAV(nombreElemento, nombreAtributo, valorAtributo)
 }
 
 
+
 function getElementByNI(nombreElemento, innerHTMLtext) {
 	ee = document.getElementsByTagName(nombreElemento)
 	
@@ -397,6 +398,56 @@ function modificarEstadoLista() {
 
 
 
+function crearSonido() {
+	sonido = document.getElementById("sonido")
+	if (sonido == null) {
+		sonido = document.createElement("audio")
+		sonido.id = "sonido"
+		sonido.src = chrome.runtime.getURL("./alert.wav")
+		sonido.setAttribute("preload", "auto")
+		sonido.setAttribute("controls", "none")
+		sonido.style.display = "none"
+		document.body.appendChild(sonido)
+	}
+}
+
+
+
+function checkNuevo()
+{
+	var tipotickets = getElementByNI("span", "Mis tickets asignados")
+
+	if (tipotickets != -1) {
+		var fecha = 0
+		var ee = document.getElementsByTagName("td")
+		var fechaMasReciente = ""
+		var fechaLS = localStorage.getItem("fecha_mas_reciente")
+	
+		for (i = 0; i < ee.length; i++) {
+			if (ee[i].getAttribute("headers") == "Fecha de última modificación") {
+				fecha = ee[i].innerHTML
+				fecha = fecha.substring(6,10) + fecha.substring(3,5) + fecha.substring(0,2) + fecha.substring(11,13) + fecha.substring(14)
+				//console.log("fecha " + fecha)
+				
+				if (fecha > fechaMasReciente) {
+					fechaMasReciente = fecha
+				}
+			}
+		}
+		console.log("fecha mas reciente " + fechaMasReciente)
+		localStorage.setItem("fecha_mas_reciente", fechaMasReciente)
+		
+		if (fechaMasReciente > fechaLS) {
+			crearSonido()
+			document.getElementById("sonido").play()
+			//alert("CAMBIO")
+		}
+	}
+}
+
+
+
+
 setTimeout(quitarEnlace,1000, "JavaScript")
 
 setInterval(refrescar, 150000, "JavaScript")
@@ -418,3 +469,5 @@ setInterval(modificarEnlacesLista, 1000, "JavaScript")
 setInterval(modificarFechasLista, 1000, "JavaScript")
 
 setInterval(modificarEstadoLista, 1000, "JavaScript")
+
+setInterval(checkNuevo, 5000, "JavaScript")
