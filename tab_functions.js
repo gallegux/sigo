@@ -403,7 +403,8 @@ function crearSonido() {
 	if (sonido == null) {
 		sonido = document.createElement("audio")
 		sonido.id = "sonido"
-		sonido.src = chrome.runtime.getURL("./alert.wav")
+		sonido.src = chrome.runtime.getURL("./alert.mp3")
+		console.log(sonido.src)
 		sonido.setAttribute("preload", "auto")
 		sonido.setAttribute("controls", "none")
 		sonido.style.display = "none"
@@ -470,4 +471,4 @@ setInterval(modificarFechasLista, 1000, "JavaScript")
 
 setInterval(modificarEstadoLista, 1000, "JavaScript")
 
-setInterval(checkNuevo, 5000, "JavaScript")
+setInterval(checkNuevo, 15000, "JavaScript")
