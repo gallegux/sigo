@@ -6,9 +6,13 @@
 	background-repeat: no-repeat;
 }
 
-td {
+.ngGrid {
 	z-index: 2 !important;
-	background: rgb(255,255,255,0.7) !important;
+	background: rgb(255,255,255,0.0) !important;
+}
+.ngRow {
+	z-index: 2 !important;
+	background: rgb(255,255,255,0.55) !important;
 }
 
 .tc__accessible td, .tc__accessible th {
@@ -157,6 +161,7 @@ td {
 	animation-delay: 0s;
 	animation-duration: 9s;
 	animation-iteration-count: 1;
+	z-index: -1;
 }
 
 @keyframes mvespi {
@@ -167,6 +172,7 @@ td {
 		bottom: 2px;
 	}
 }
+
 
 
 #barraCRU {

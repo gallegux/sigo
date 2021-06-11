@@ -142,11 +142,17 @@ function revisarEsquina() {
 		if (dl.indexOf('ticket-console') != -1) {
 			espi.className = ''
 			espi.className = 'espineteTumbadoVisible'
-
+			//espi.style.zIndex = 1
+		}
+		else {
+			//espi.style.zIndex = -1
+			espi.className = 'espineteTumbadoNoVisible'
+		}
+		/*
 			divnose = buscarElemento('div', 'No se encontraron resultados')
 			if (divnose != -1) {
-				//console.log('pagina con resultados')
-				espi.style.zIndex = 1
+				console.log('pagina con resultados')
+				espi.style.zIndex = 100
 			}
 			else {
 				//console.log('sin resultados')
@@ -157,6 +163,7 @@ function revisarEsquina() {
 			console.log('pagina detalle')
 			espi.className = 'espineteTumbadoNoVisible'
 		}
+		*/
 	}
 }
 
@@ -335,6 +342,33 @@ function modificarPantallaIncidencia() {
 }
 
 
+function modificarCabecerasLista() {
+	elementos = document.getElementsByTagName('div')
+	
+	for (i = 0; i < elementos.length; i++) {
+		elemento = elementos[i]
+		atributo = elemento.getAttribute('ng-click')
+
+		if (atributo == 'col.sort($event)') {
+			// es fecha?
+			valor = elemento.innerHTML
+			if (valor == 'Nombre completo de cliente') {
+				elemento.innerHTML = 'Usuario'
+			}
+			else if (valor == 'Usuario asignado') {
+				elemento.innerHTML = 'Técnico'
+			}
+			else if (valor == 'Resumen') {
+				elemento.innerHTML = 'Petición'
+			}
+			else if (valor == 'Fecha de última modificación') {
+				elemento.innerHTML = 'Última modificación'
+			}
+		}
+	}
+}
+
+/*
 function modificarEnlacesLista() {
 	aa = document.getElementsByTagName('a')
 	
@@ -357,18 +391,27 @@ function modificarEnlacesLista() {
 		}
 	}
 }
+*/
+
+function isFecha(texto) {
+	return (texto.substring(2,3) == '/' && texto.substring(5,6) == '/' && texto.substring(13,14) == ':')
+}
 
 
 function modificarFechasLista() {
-	tds = document.getElementsByTagName('td')
+	elementos = document.getElementsByTagName('span')
 	
-	for (i = 0; i < tds.length; i++) {
-		c = tds[i]
-		ch = c.getAttribute('headers')
-		if (ch != null && ch.startsWith('Fecha de ')) {
-			fecha = c.innerHTML
-			fecha = fecha.substring(0, 16)
-			c.innerHTML = fecha
+	for (i = 0; i < elementos.length; i++) {
+		elemento = elementos[i]
+		atributo = elemento.getAttribute('class')
+
+		if (atributo == 'ng-binding') {
+			// es fecha?
+			valor = elemento.innerHTML
+			if (isFecha(valor)) {
+				valor = valor.substring(0, 16)
+				elemento.innerHTML = valor
+			}
 		}
 	}
 }
@@ -376,22 +419,23 @@ function modificarFechasLista() {
 
 
 function modificarEstadoLista() {
-	tds = document.getElementsByTagName('td')
+	elementos = document.getElementsByTagName('span')
 	
-	for (i = 0; i < tds.length; i++) {
-		c = tds[i]
-		ch = c.getAttribute('headers')
-		if (ch != null && ch.startsWith('Estado')) {
-			est = c.innerHTML
+	for (i = 0; i < elementos.length; i++) {
+		elemento = elementos[i]
+		atributo = elemento.getAttribute('class')
+		
+		if (atributo == 'ng-binding') {
+			valor = elemento.innerHTML
 			//console.log(est)
-			if      (est == 'En curso')  c.style.color = '#008000' // verde
-			else if (est == 'Planificación') c.style.color = '#008040' // verde azulado
-			else if (est == 'Asignado')  c.style.color = '#804080' // violeta
-			else if (est == 'Pendiente') c.style.color = '#FF8000' // naranja
-			else if (est == 'Rechazado') c.style.color = '#C00000' 
-			else if (est == 'Cancelado') c.style.color = '#C00000'
-			else if (est == 'Terminado') c.style.color = '#000000'
-			else if (est == 'Esperando autorización') c.style.color = '#8080C0' // azul grisaceo
+			if      (valor == 'En curso')  elemento.style.color = '#008000' // verde
+			else if (valor == 'Planificación') elemento.style.color = '#008040' // verde azulado
+			else if (valor == 'Asignado')  elemento.style.color = '#804080' // violeta
+			else if (valor == 'Pendiente') elemento.style.color = '#FF8000' // naranja
+			else if (valor == 'Rechazado') elemento.style.color = '#C00000' 
+			else if (valor == 'Cancelado') elemento.style.color = '#C00000'
+			else if (valor == 'Terminado') elemento.style.color = '#000000'
+			else if (valor == 'Esperando autorización') elemento.style.color = '#8080C0' // azul grisaceo
 		}
 	}
 }
@@ -414,42 +458,41 @@ function crearSonido() {
 
 
 
-function checkNuevo()
-{
-	var tipotickets = getElementByNI("span", "Mis tickets asignados")
+function checkNuevo()  {
+	elementos = document.getElementsByTagName('span')
+	fecha = 0
+	fechaMasReciente = ""
+	fechaLS = localStorage.getItem("fecha_mas_reciente")
 
-	if (tipotickets != -1) {
-		var fecha = 0
-		var ee = document.getElementsByTagName("td")
-		var fechaMasReciente = ""
-		var fechaLS = localStorage.getItem("fecha_mas_reciente")
-	
-		for (i = 0; i < ee.length; i++) {
-			if (ee[i].getAttribute("headers") == "Fecha de última modificación") {
-				fecha = ee[i].innerHTML
-				fecha = fecha.substring(6,10) + fecha.substring(3,5) + fecha.substring(0,2) + fecha.substring(11,13) + fecha.substring(14)
+	for (i = 0; i < elementos.length; i++) {
+		ele = elementos[i]
+		if (ele.getAttribute("class") == "ng-binding") {
+			fecha = ele.innerHTML
+			if (isFecha(fecha)) {
+				fecha = fecha.substring(6,10) + fecha.substring(3,5) + fecha.substring(0,2) + fecha.substring(11)
 				//console.log("fecha " + fecha)
-				
+			
 				if (fecha > fechaMasReciente) {
 					fechaMasReciente = fecha
 				}
 			}
 		}
-		console.log("fecha mas reciente " + fechaMasReciente)
+	}
+	//console.log("fecha mas reciente " + fechaMasReciente)
+	if (fechaMasReciente != '') {
 		localStorage.setItem("fecha_mas_reciente", fechaMasReciente)
 		
 		if (fechaMasReciente > fechaLS) {
 			crearSonido()
-			document.getElementById("sonido").play()
-			//alert("CAMBIO")
+			//document.getElementById("sonido").play()
+			alert("CAMBIO [" + fechaMasReciente + "]  [" + fechaLS + "]")
 		}
 	}
 }
 
 
 
-
-setTimeout(quitarEnlace,1000, "JavaScript")
+//setTimeout(quitarEnlace,1000, "JavaScript")
 
 setInterval(refrescar, 150000, "JavaScript")
 
@@ -463,11 +506,13 @@ modificarMenu()
 
 anadirEsquina()
 
-setInterval(cambiarPrioridades, 1000, "JavaScript")
+//setInterval(cambiarPrioridades, 1000, "JavaScript")
 
-setInterval(modificarEnlacesLista, 1000, "JavaScript")
+//setInterval(modificarEnlacesLista, 1000, "JavaScript")
 
-setInterval(modificarFechasLista, 1000, "JavaScript")
+setInterval(modificarCabecerasLista, 1000, "JavaScript")
+
+//setInterval(modificarFechasLista, 1000, "JavaScript")
 
 setInterval(modificarEstadoLista, 1000, "JavaScript")
 
