@@ -61,6 +61,7 @@ function refrescar() {
 	}
 	else {
 		b = getElementByNAV('button', 'title', 'Actualizar consola')
+		console.log('boton refresh='+b)
 		if (b != -1) {
 			b.click()
 		}
@@ -459,37 +460,61 @@ function crearSonido() {
 
 
 function checkNuevo()  {
-	elementos = document.getElementsByTagName('span')
-	fecha = 0
-	fechaMasReciente = ""
-	fechaLS = localStorage.getItem("fecha_mas_reciente")
+	combo = getElementByNAV('span', 'ng-if', 'appliedUserFiltern.name')
+	
+	if (combo.innerHTML == 'Mis tickets asignados') {
+		elementos = document.getElementsByTagName('span')
+		fecha = 0
+		fechaMasReciente = ""
+		fechaLS = localStorage.getItem("fecha_mas_reciente")
 
-	for (i = 0; i < elementos.length; i++) {
-		ele = elementos[i]
-		if (ele.getAttribute("class") == "ng-binding") {
-			fecha = ele.innerHTML
-			if (isFecha(fecha)) {
-				fecha = fecha.substring(6,10) + fecha.substring(3,5) + fecha.substring(0,2) + fecha.substring(11)
-				//console.log("fecha " + fecha)
-			
-				if (fecha > fechaMasReciente) {
-					fechaMasReciente = fecha
+		for (i = 0; i < elementos.length; i++) {
+			ele = elementos[i]
+			if (ele.getAttribute("class") == "ng-binding") {
+				fecha = ele.innerHTML
+				if (isFecha(fecha)) {
+					fecha = fecha.substring(6,10) + fecha.substring(3,5) + fecha.substring(0,2) + fecha.substring(11)
+					//console.log("fecha " + fecha)
+				
+					if (fecha > fechaMasReciente) {
+						fechaMasReciente = fecha
+					}
 				}
 			}
 		}
-	}
-	//console.log("fecha mas reciente " + fechaMasReciente)
-	if (fechaMasReciente != '') {
-		localStorage.setItem("fecha_mas_reciente", fechaMasReciente)
-		
-		if (fechaMasReciente > fechaLS) {
-			crearSonido()
-			//document.getElementById("sonido").play()
-			alert("CAMBIO [" + fechaMasReciente + "]  [" + fechaLS + "]")
+		//console.log("fecha mas reciente " + fechaMasReciente)
+		if (fechaMasReciente != '') {
+			localStorage.setItem("fecha_mas_reciente", fechaMasReciente)
+			
+			if (fechaMasReciente > fechaLS) {
+				crearSonido()
+				document.getElementById("sonido").play()
+				//alert("CAMBIO [" + fechaMasReciente + "]  [" + fechaLS + "]")
+			}
 		}
 	}
 }
 
+
+
+function anadirEnlacesUsuario() {
+	console.log('---anadir enlaces usuario---')
+	lab = document.getElementById('jccm_chr_logincustomerLabel')
+	if (lab == null) return
+	if (document.getElementById('enlace_ldap') != null) return
+	
+	lab = lab.parentNode
+	
+	uid = lab.childNodes[2].textContent 
+	
+	enlaceLDAP = document.createElement('a')
+	enlaceLDAP.id = 'enlace_ldap'
+	enlaceLDAP.setAttribute('target', 'ldap_' + uid)
+	enlaceLDAP.setAttribute('href', 'https://cru.jccm.es/usuarios/gestusu.php?uid=' + uid)
+	enlaceLDAP.innerHTML = '<span><b>Ficha LDAP</b> &nbsp;</span><span class="icon-pop_up ng-scope"></span>'
+	
+	lab.appendChild(enlaceLDAP)
+}
 
 
 //setTimeout(quitarEnlace,1000, "JavaScript")
@@ -517,3 +542,5 @@ setInterval(modificarCabecerasLista, 1000, "JavaScript")
 setInterval(modificarEstadoLista, 1000, "JavaScript")
 
 setInterval(checkNuevo, 15000, "JavaScript")
+
+setInterval(anadirEnlacesUsuario, 1000, 'JavaScript')
